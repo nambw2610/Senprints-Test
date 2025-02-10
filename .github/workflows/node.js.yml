@@ -1,0 +1,26 @@
+name: Deploy to EC2
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Install Tools on Github Actions
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER_NAME }}
+          key: ${{ secrets.SSH_KEY_BUILD }}
+          port: ${{ secrets.PORT }}
+          envs: TAG
+          script: |
+            echo "================================Install Docker======================================="
+            cd nginx
+            docker build -t nam .
+            docker compose down -v
+            docker system prune -af
+            docker compose up -d
