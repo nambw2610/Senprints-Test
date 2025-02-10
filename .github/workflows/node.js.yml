@@ -20,6 +20,7 @@ jobs:
           script: |
             echo "================================Install Docker======================================="
             cd nginx
+            git pull
             docker build -t nam .
             docker compose down -v
             docker system prune -af
