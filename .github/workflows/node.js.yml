@@ -21,12 +21,12 @@ jobs:
             echo "================================Install Docker======================================="
             cd nginx
             git pull
-            docker build -t namsenprints/nginx .
             docker build -t namsenprints/nginx:test .
             docker push namsenprints/nginx:test
             docker compose down -v
             docker system prune -af
             docker run --rm -v $(pwd)/nginx.conf:/etc/nginx/nginx.conf namsenprints/nginx:test nginx -t
             docker compose up -d
-            docker push namsenprints/nginx
+            docker build -t namsenprints/nginx:prod .
+            docker push namsenprints/nginx:prod
 
